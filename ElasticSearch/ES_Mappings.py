@@ -121,7 +121,7 @@ MappingsDict['iuparts'] = {
 		
 		
 		# Identifications Object
-		'Identification': {
+		'Identifications': {
 			# use a nested type here?
 			'type': 'nested',
 			'properties': {

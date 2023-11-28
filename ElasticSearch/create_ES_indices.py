@@ -17,6 +17,7 @@ from DCDataGetters.DataGetter import DataGetter
 
 from DCDataGetters.IdentificationUnitParts import IdentificationUnitParts
 from DCDataGetters.Projects import Projects
+from DCDataGetters.Identifications import Identifications
 
 
 if __name__ == "__main__":
@@ -54,23 +55,15 @@ if __name__ == "__main__":
 			projects = Projects(data_getter)
 			projects_dict = projects.get_data_page(i)
 			
-			es_indexer.bulkUpdateProjects(projects_dict, i)
+			es_indexer.bulkUpdateFields(projects_dict, 'Projects', i)
+			
+			identifications = Identifications(data_getter)
+			identifications_dict = identifications.get_data_page(i)
+			
+			es_indexer.bulkUpdateFields(identifications_dict, 'Identifications', i)
 			
 			
 		
 		pudb.set_trace()
 	
-	
-	
-	
-	
-	es_indexer = ES_Indexer(indexes)
-	for index in es_indexer.dataTypes:
-		#pudb.set_trace()
-		logger.info('creating new index for {0}'.format(index))
-		es_indexer.deleteIndex(index=index)
-		es_indexer.createIndex(index=index, useMapping=True, mapping=None)
-		es_indexer.setNeededDataclass(index=index)
-		# set the search options for the dataclass here via es_indexer object
-		es_indexer.dataclass.searchAll()
-		es_indexer.slicedBulkIndexing(index=index)
+

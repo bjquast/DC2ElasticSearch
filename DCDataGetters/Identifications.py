@@ -6,7 +6,7 @@ logger = logging.getLogger('elastic')
 log_query = logging.getLogger('query')
 
 
-class Identification():
+class Identifications():
 	def __init__(self, datagetter):
 		self.datagetter = datagetter
 		
