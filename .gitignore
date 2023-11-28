@@ -1,0 +1,5 @@
+config.ini
+*.log
+*/__pycache__/*
+*.egg-info/*
+
