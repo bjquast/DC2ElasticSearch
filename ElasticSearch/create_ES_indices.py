@@ -18,20 +18,11 @@ from DCDataGetters.DataGetter import DataGetter
 from DCDataGetters.IdentificationUnitParts import IdentificationUnitParts
 from DCDataGetters.Projects import Projects
 from DCDataGetters.Identifications import Identifications
+from DCDataGetters.CollectionSpecimenImages import CollectionSpecimenImages
 
 
 if __name__ == "__main__":
 	pudb.set_trace()
-	'''
-	argreader = argparse.ArgumentParser(description='Create elastic search index for DiversityCollection data')
-	argreader.add_argument('--index', metavar='index', nargs='*', help='the index(es) to create, if not given all indexes will be created\nexample: create_ES_indices.py --index asv_tables asv_sets')
-	args = argreader.parse_args()
-	
-	if args.index is None:
-		indexes = ['CollectedObjects']
-	else:
-		indexes = args.index
-	'''
 	
 	es_indexer = ES_Indexer()
 	es_indexer.deleteIndex()
@@ -62,7 +53,10 @@ if __name__ == "__main__":
 			
 			es_indexer.bulkUpdateFields(identifications_dict, 'Identifications', i)
 			
+			images = CollectionSpecimenImages(data_getter)
+			images_dict = images.get_data_page(i)
 			
+			es_indexer.bulkUpdateFields(images_dict, 'Images', i)
 		
 		pudb.set_trace()
 	

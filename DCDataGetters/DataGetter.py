@@ -58,7 +58,7 @@ class DataGetter():
 		([idshash], [DatabaseURI], [CollectionSpecimenID], [IdentificationUnitID], [SpecimenPartID], [SpecimenAccessionNumber], [PartAccessionNumber])
 		SELECT 
 		 -- for development
-		 -- TOP 5000
+		 -- TOP 100
 		CONVERT(VARCHAR(255), HASHBYTES(
 			'SHA2_512', CONCAT(CONCAT(?, '/', ?),
 			cs.CollectionSpecimenID, iu.IdentificationUnitID, csp.SpecimenPartID)), 2

@@ -173,6 +173,31 @@ MappingsDict['iuparts'] = {
 				'Project': {'type': 'keyword'},
 				'ProjectURI': {'type': 'keyword'},
 			}
+		},
+		
+		'Images': {
+			'type': 'nested',
+			'properties': {
+				'URI': {'type': 'keyword'},
+				'ResourceURI': {'type': 'keyword'},
+				'ImageType': {'type': 'keyword'},
+				'Title': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+				'Description': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+				'ImageCreator': {'type': 'keyword'},
+				'CopyRightStatement': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+				'LicenseType': {'type': 'keyword'},
+				'LicenseURI': {'type': 'keyword'},
+				'LicenseHolder': {'type': 'keyword'},
+				'LicenseHolderAgentURI': {'type': 'keyword'},
+				'LicenseYear': {
+					'type': 'date',
+					"format": "yyyy-MM-dd||yyyy||yy",
+					'ignore_malformed': True
+				},
+				'ImageDisplayOrder': {'type': 'integer'},
+				'ImageWithholdingReason': {'type': 'keyword'},
+				'ImageWithhold': {'type': 'boolean'}
+			}
 		}
-	},
+	}
 }
