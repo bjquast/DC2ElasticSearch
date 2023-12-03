@@ -40,7 +40,7 @@ class Identifications():
 			ORDER BY [rownumber], i.[IdentificationSequence]
 			;"""
 			self.cur.execute(query, [startrow,lastrow])
-			self.columns = [column[0] for column in self.cur.description]
+			#self.columns = [column[0] for column in self.cur.description]
 			
 			self.rows = self.cur.fetchall()
 			self.rows2dict()

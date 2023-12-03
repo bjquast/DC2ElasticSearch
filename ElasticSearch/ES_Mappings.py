@@ -176,7 +176,7 @@ MappingsDict['iuparts'] = {
 		},
 		
 		'Images': {
-			'type': 'nested',
+			#'type': 'nested',
 			'properties': {
 				'URI': {'type': 'keyword'},
 				'ResourceURI': {'type': 'keyword'},
@@ -197,6 +197,56 @@ MappingsDict['iuparts'] = {
 				'ImageDisplayOrder': {'type': 'integer'},
 				'ImageWithholdingReason': {'type': 'keyword'},
 				'ImageWithhold': {'type': 'boolean'}
+			}
+		},
+		
+		
+		'Analyses': {
+			'properties': {
+				# from IdentificationUnitAnalysis
+				# AnalysisNumber -> AnalysisInstanceID
+				'AnalysisInstanceID': {'type': 'keyword'},
+				'AnalysisInstanceNotes': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+				'ExternalAnalysisURI': {'type': 'keyword'},
+				'ResponsibleName': {'type': 'keyword'},
+				'AnalysisDate': {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||dd.MM.yyyy||dd.MM.yy||d.MM.yyyy||d.M.yyyy||dd.M.yyyy||d.MM.yy||d.M.yy||dd.M.yy||yyyy",
+					'ignore_malformed': True
+				},
+				'AnalysisResult': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+				
+				# from Analysis
+				# AnalysisID -> AnalysisTypeID
+				'AnalysisTypeID': {'type': 'long'},
+				'AnalysisDisplay': {'type': 'keyword'},
+				'AnalysisDescription': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+				'MeasurementUnit': {'type': 'keyword'},
+				'AnalysisTypeNotes': {'type': 'keyword'},
+				
+				# from IdentificationUnitAnalysisMethod
+				'AnalysisMethods': {
+					'properties': {
+						# MethodMarker -> MethodInstanceID
+						'MethodInstanceID': {'type': 'keyword'},
+						# MethodID -> MethodTypeID
+						'MethodTypeID': {'type': 'long'},
+						'MethodDisplay': {'type': 'keyword'},
+						'MethodDescription': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+						'MethodTypeNotes': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+						'AnalysisMethodParameters': {
+							'properties': {
+								# appears that only one instance of a parameter is allowed for one IdentificationUnitAnalysisMethodParameter
+								'ParameterID': {'type': 'long'},
+								'ParameterValue': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+								'ParameterDisplay': {'type': 'keyword'},
+								'ParameterDescription': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+								'ParameterNotes': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+							}
+						}
+					}
+				},
+				
 			}
 		}
 	}

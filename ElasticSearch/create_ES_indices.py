@@ -19,6 +19,7 @@ from DCDataGetters.IdentificationUnitParts import IdentificationUnitParts
 from DCDataGetters.Projects import Projects
 from DCDataGetters.Identifications import Identifications
 from DCDataGetters.CollectionSpecimenImages import CollectionSpecimenImages
+from DCDataGetters.IdentificationUnitAnalyses import IdentificationUnitAnalyses
 
 
 if __name__ == "__main__":
@@ -57,6 +58,12 @@ if __name__ == "__main__":
 			images_dict = images.get_data_page(i)
 			
 			es_indexer.bulkUpdateFields(images_dict, 'Images', i)
+			
+			analyses = IdentificationUnitAnalyses(data_getter)
+			analyses_dict = analyses.get_data_page(i)
+			
+			es_indexer.bulkUpdateFields(analyses_dict, 'Analyses', i)
+			
 		
 		pudb.set_trace()
 	

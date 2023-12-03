@@ -58,12 +58,12 @@ class DataGetter():
 		([idshash], [DatabaseURI], [CollectionSpecimenID], [IdentificationUnitID], [SpecimenPartID], [SpecimenAccessionNumber], [PartAccessionNumber])
 		SELECT 
 		 -- for development
-		 -- TOP 100
+		 -- TOP 5000
 		CONVERT(VARCHAR(255), HASHBYTES(
-			'SHA2_512', CONCAT(CONCAT(?, '/', ?),
+			'SHA2_512', CONCAT('{0}/{1}',
 			cs.CollectionSpecimenID, iu.IdentificationUnitID, csp.SpecimenPartID)), 2
 		) AS idshash,
-		CONCAT(?, '/', ?) AS DatabaseURI,
+		'{0}/{1}' AS DatabaseURI,
 		cs.CollectionSpecimenID, iu.IdentificationUnitID, csp.SpecimenPartID,
 		cs.AccessionNumber AS SpecimenAccessionNumber,
 		COALESCE(csp.AccessionNumber, cs.AccessionNumber) AS PartAccessionNumber
@@ -75,9 +75,15 @@ class DataGetter():
 		LEFT JOIN CollectionSpecimenPart csp 
 		ON csp.CollectionSpecimenID = iup.CollectionSpecimenID AND csp.SpecimenPartID = iup.SpecimenPartID 
 		 -- WHERE iup.SpecimenPartID IS NOT NULL
+		 -- for development
+		 -- WHERE cs.AccessionNumber = 'ZFMK-TIS-46'
+		 -- WHERE cs.CollectionSpecimenID = 14
+		ORDER BY [CollectionSpecimenID], [IdentificationUnitID], [SpecimenPartID]
 		;"""
 		
-		self.cur.execute(query, [self.server_url, self.database_name, self.server_url, self.database_name])
+		log_query.info(query.format(self.server_url, self.database_name))
+		
+		self.cur.execute(query.format(self.server_url, self.database_name))
 		self.cur.commit()
 		
 		self.set_max_page()
