@@ -59,7 +59,13 @@ if __name__ == "__main__":
 			
 			es_indexer.bulkUpdateFields(images_dict, 'Images', i)
 			
-			analyses = IdentificationUnitAnalyses(data_getter)
+			barcode_amp_filter_ids = {
+			'161': {
+					'12': ['62', '86', '87'],
+					'16': ['73', '63', '64', '65', '66', '71', '72', '74', '75', '84', '91', '92']
+				}
+			}
+			analyses = IdentificationUnitAnalyses(data_getter, barcode_amp_filter_ids)
 			analyses_dict = analyses.get_data_page(i)
 			
 			es_indexer.bulkUpdateFields(analyses_dict, 'Analyses', i)

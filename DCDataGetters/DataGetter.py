@@ -31,13 +31,13 @@ class DataGetter():
 		query = """
 		CREATE TABLE [#temp_iu_part_ids] (
 		[rownumber] INT IDENTITY PRIMARY KEY, -- set an IDENTITY column that can be used for paging,
-		[idshash] VARCHAR(255) NOT NULL,
-		[DatabaseURI] VARCHAR(255),
+		[idshash] NVARCHAR(255) NOT NULL,
+		[DatabaseURI] NVARCHAR(255),
 		[CollectionSpecimenID] INT, 
 		[IdentificationUnitID] INT,
 		[SpecimenPartID] INT,
-		[SpecimenAccessionNumber] VARCHAR(255),
-		[PartAccessionNumber] VARCHAR(255),
+		[SpecimenAccessionNumber] NVARCHAR(255),
+		[PartAccessionNumber] NVARCHAR(255),
 		INDEX [idx_idshash] UNIQUE ([idshash]),
 		INDEX [idx_DatabaseURI] ([DatabaseURI]),
 		INDEX [idx_CollectionSpecimenID] ([CollectionSpecimenID]),
@@ -58,10 +58,10 @@ class DataGetter():
 		([idshash], [DatabaseURI], [CollectionSpecimenID], [IdentificationUnitID], [SpecimenPartID], [SpecimenAccessionNumber], [PartAccessionNumber])
 		SELECT 
 		 -- for development
-		 -- TOP 5000
-		CONVERT(VARCHAR(255), HASHBYTES(
-			'SHA2_512', CONCAT('{0}/{1}',
-			cs.CollectionSpecimenID, iu.IdentificationUnitID, csp.SpecimenPartID)), 2
+		 -- TOP 20000
+		CONVERT(NVARCHAR(255), HASHBYTES(
+			'SHA2_512', CONCAT('{0}/{1}', '_', 
+			cs.CollectionSpecimenID, '_', iu.IdentificationUnitID, '_', csp.SpecimenPartID)), 2
 		) AS idshash,
 		'{0}/{1}' AS DatabaseURI,
 		cs.CollectionSpecimenID, iu.IdentificationUnitID, csp.SpecimenPartID,

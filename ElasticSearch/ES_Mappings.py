@@ -200,12 +200,47 @@ MappingsDict['iuparts'] = {
 			}
 		},
 		
+		# small names for field names not in DC tables?!
+		'Barcodes': {
+			'properties': {
+				'region': {'type': 'keyword'},
+				'sequence': {'type': 'text'},
+				'AnalysisDate': {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||dd.MM.yyyy||dd.MM.yy||d.MM.yyyy||d.M.yyyy||dd.M.yyyy||d.MM.yy||d.M.yy||dd.M.yy||yyyy",
+					'ignore_malformed': True
+				},
+				'sequence_length': {'type': 'integer'},
+				'trace_count': {'type': 'integer'},
+				'Sequencing': {
+					'properties': {
+						'Forward_PCR_primer_name': {'type': 'keyword'},
+						'Reverse_PCR_primer_name': {'type': 'keyword'},
+						'Forward_PCR_primer_sequence': {'type': 'keyword'},
+						'Reverse_PCR_primer_sequence': {'type': 'keyword'},
+						'Forward_Sequencing_primer_name': {'type': 'keyword'},
+						'Reverse_Sequencing_primer_name': {'type': 'keyword'},
+						'Forward_Sequencing_primer_sequence': {'type': 'keyword'},
+						'Reverse_Sequencing_primer_sequence': {'type': 'keyword'},
+						'Sequencing_Laboratory': {'type': 'keyword'},
+						'Sequencing_Date': {
+							"type": "date",
+							"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||dd.MM.yyyy||dd.MM.yy||d.MM.yyyy||d.M.yyyy||dd.M.yyyy||d.MM.yy||d.M.yy||dd.M.yy||yyyy",
+							'ignore_malformed': True
+						},
+						'Tracefile_forward_URL': {'type': 'keyword'},
+						'Tracefile_reverse_URL': {'type': 'keyword'},
+					}
+				}
+			}
+		},
+		
+		
 		
 		'Analyses': {
 			'properties': {
 				# from IdentificationUnitAnalysis
-				# AnalysisNumber -> AnalysisInstanceID
-				'AnalysisInstanceID': {'type': 'keyword'},
+				'AnalysisNumber': {'type': 'keyword'},
 				'AnalysisInstanceNotes': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
 				'ExternalAnalysisURI': {'type': 'keyword'},
 				'ResponsibleName': {'type': 'keyword'},
@@ -217,24 +252,21 @@ MappingsDict['iuparts'] = {
 				'AnalysisResult': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
 				
 				# from Analysis
-				# AnalysisID -> AnalysisTypeID
-				'AnalysisTypeID': {'type': 'long'},
+				'AnalysisID': {'type': 'long'},
 				'AnalysisDisplay': {'type': 'keyword'},
 				'AnalysisDescription': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
 				'MeasurementUnit': {'type': 'keyword'},
 				'AnalysisTypeNotes': {'type': 'keyword'},
 				
 				# from IdentificationUnitAnalysisMethod
-				'AnalysisMethods': {
+				'Methods': {
 					'properties': {
-						# MethodMarker -> MethodInstanceID
-						'MethodInstanceID': {'type': 'keyword'},
-						# MethodID -> MethodTypeID
-						'MethodTypeID': {'type': 'long'},
+						'MethodMarker': {'type': 'keyword'},
+						'MethodID': {'type': 'long'},
 						'MethodDisplay': {'type': 'keyword'},
 						'MethodDescription': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
 						'MethodTypeNotes': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-						'AnalysisMethodParameters': {
+						'Parameters': {
 							'properties': {
 								# appears that only one instance of a parameter is allowed for one IdentificationUnitAnalysisMethodParameter
 								'ParameterID': {'type': 'long'},
