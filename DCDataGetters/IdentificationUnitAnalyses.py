@@ -312,9 +312,14 @@ class IdentificationUnitAnalyses():
 			
 			self.methods_dict[method_pk] = {}
 			
+			self.methods_dict[method_pk]['MethodDisplay'] = method['MethodDisplay']
+			self.methods_dict[method_pk]['MethodDescription'] = method['MethodDescription']
+			
+			'''
 			for key in method:
 				if key not in ('_id', 'method_pk', 'analysis_pk', 'AnalysisID', 'AnalysisNumber'):
 					self.methods_dict[method_pk][key] = method[key]
+			'''
 			
 			self.keys_dict[idshash][analysis_pk][method_pk] = {}
 			
@@ -329,11 +334,11 @@ class IdentificationUnitAnalyses():
 		m_temp.[method_pk],
 		a_temp.[analysis_pk],
 		a_temp.[idshash] AS [_id],
-		iuamp.ParameterID,
+		 -- iuamp.ParameterID,
 		iuamp.[Value] AS ParameterValue,
-		p.DisplayText AS ParameterDisplay,
-		p.Description AS ParameterDescription,
-		p.Notes AS ParameterNotes
+		p.DisplayText AS ParameterDisplay -- ,
+		 -- p.Description AS ParameterDescription,
+		 -- p.Notes AS ParameterNotes
 		FROM [#temp_method_ids] m_temp
 		INNER JOIN [#temp_analysis_ids] a_temp
 		ON m_temp.analysis_pk = a_temp.analysis_pk
@@ -378,11 +383,17 @@ class IdentificationUnitAnalyses():
 			method_pk = parameter['method_pk']
 			analysis_pk = parameter['analysis_pk']
 			
-			self.parameters_dict[parameter_pk] = {}
+			self.parameters_dict[parameter_pk] = []
 			
+			# use only the name and the value of each parameter
+			# it is easier to put them into self.iuanalyses_dict later when they are provided as list
+			self.parameters_dict[parameter_pk] = [parameter['ParameterDisplay'], parameter['ParameterValue']]
+			
+			'''
 			for key in parameter:
 				if key not in ('_id', 'method_pk', 'analysis_pk', 'parameter_pk', 'AnalysisID', 'AnalysisNumber', 'MethodID', 'MethodMarker'):
 					self.parameters_dict[parameter_pk][key] = parameter[key]
+			'''
 			
 			self.keys_dict[idshash][analysis_pk][method_pk][parameter_pk] = {}
 			
@@ -405,11 +416,13 @@ class IdentificationUnitAnalyses():
 					method = self.methods_dict[method_pk]
 					
 					# about 40 parameters per method in barcoding
-					method['Parameters'] = []
+					# put parameters directly into method dict, by using the ParameterDisplay as key in method dict
+					# method['Parameters'] = {}
 					
 					for parameter_pk in self.keys_dict[idshash][analysis_pk][method_pk]:
 						parameter = self.parameters_dict[parameter_pk]
-						method['Parameters'].append(parameter)
+						
+						method[parameter[0]] = parameter[1]
 					
 					analysis['Methods'].append(method)
 				

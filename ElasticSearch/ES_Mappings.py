@@ -266,16 +266,6 @@ MappingsDict['iuparts'] = {
 						'MethodDisplay': {'type': 'keyword'},
 						'MethodDescription': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
 						'MethodTypeNotes': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-						'Parameters': {
-							'properties': {
-								# appears that only one instance of a parameter is allowed for one IdentificationUnitAnalysisMethodParameter
-								'ParameterID': {'type': 'long'},
-								'ParameterValue': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-								'ParameterDisplay': {'type': 'keyword'},
-								'ParameterDescription': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-								'ParameterNotes': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-							}
-						}
 					}
 				},
 				
