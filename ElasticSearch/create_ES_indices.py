@@ -18,6 +18,7 @@ from DCDataGetters.DataGetter import DataGetter
 from DCDataGetters.IdentificationUnitParts import IdentificationUnitParts
 from DCDataGetters.Projects import Projects
 from DCDataGetters.Identifications import Identifications
+from DCDataGetters.CollectionAgents import CollectionAgents
 from DCDataGetters.CollectionSpecimenImages import CollectionSpecimenImages
 from DCDataGetters.IdentificationUnitAnalyses import IdentificationUnitAnalyses
 
@@ -53,6 +54,11 @@ if __name__ == "__main__":
 			identifications_dict = identifications.get_data_page(i)
 			
 			es_indexer.bulkUpdateFields(identifications_dict, 'Identifications', i)
+			
+			collectors = CollectionAgents(data_getter)
+			collectors_dict = collectors.get_data_page(i)
+			
+			es_indexer.bulkUpdateFields(collectors_dict, 'CollectionAgents', i)
 			
 			images = CollectionSpecimenImages(data_getter)
 			images_dict = images.get_data_page(i)

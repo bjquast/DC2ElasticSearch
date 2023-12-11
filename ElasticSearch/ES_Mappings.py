@@ -157,11 +157,16 @@ MappingsDict['iuparts'] = {
 		'IUDisplayOrder': {'type': 'integer'},
 		
 		# Collectors
-		'CollectorsName': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-		'CollectorsAgentURI': {'type': 'keyword'},
-		'CollectorsOrder': {'type': 'integer'},
-		'CollectorsDataWithholding': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-		'CollectorsWithhold': {'type': 'boolean'},
+		'CollectionAgents': {
+			'properties': {
+				'CollectorsName': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+				'CollectorsAgentURI': {'type': 'keyword'},
+				'CollectorsOrder': {'type': 'integer'},
+				'CollectorsSpecimenFieldNumber': {'type': 'keyword'},
+				'CollectorsDataWithholding': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+				'CollectorsWithhold': {'type': 'boolean'},
+			}
+		},
 		
 		# Taxa matched in GBIF or TNT taxonomy
 		'GBIFTNTMatchedTaxon': {'type': 'keyword'},

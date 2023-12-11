@@ -6,7 +6,7 @@ logger = logging.getLogger('elastic')
 log_query = logging.getLogger('query')
 
 
-class Identifications():
+class CollectionAgents():
 	def __init__(self, datagetter):
 		self.datagetter = datagetter
 		
@@ -24,20 +24,23 @@ class Identifications():
 			SELECT DISTINCT
 			[rownumber],
 			idstemp.[idshash] AS [_id],
-			i.IdentificationSequence AS IdentificationSequenceID,
-			CONVERT(NVARCHAR, i.IdentificationDate, 120) AS [IdentificationDate],
-			i.TaxonomicName,
-			i.VernacularTerm,
-			i.NameURI AS TaxonNameURI,
-			i.TypeStatus,
-			i.TypeNotes
+			ca.CollectorsName,
+			ca.CollectorsAgentURI,
+			ca.CollectorsSequence,
+			ca.CollectorsNumber AS CollectorsSpecimenFieldNumber,
+			ca.DataWithholdingReason AS CollectorsWithholdingReason,
+			CASE 
+				WHEN ca.[DataWithholdingReason] = '' THEN 'false'
+				WHEN ca.[DataWithholdingReason] IS NULL THEN 'false'
+				ELSE 'true'
+			END AS CollectorsWithhold
 			FROM [#temp_iu_part_ids] idstemp
 			INNER JOIN IdentificationUnit iu 
 			ON iu.[CollectionSpecimenID] = idstemp.[CollectionSpecimenID] AND iu.[IdentificationUnitID] = idstemp.[IdentificationUnitID]
-			INNER JOIN [Identification] i
-			ON i.[CollectionSpecimenID] = iu.[CollectionSpecimenID] AND i.[IdentificationUnitID] = iu.[IdentificationUnitID]
+			INNER JOIN [CollectionAgent] ca
+			ON ca.[CollectionSpecimenID] = iu.[CollectionSpecimenID]
 			WHERE idstemp.[rownumber] BETWEEN ? AND ?
-			ORDER BY [rownumber], i.[IdentificationSequence]
+			ORDER BY idstemp.[idshash], ca.[CollectorsSequence]
 			;"""
 			self.cur.execute(query, [startrow,lastrow])
 			#self.columns = [column[0] for column in self.cur.description]
@@ -46,28 +49,30 @@ class Identifications():
 			self.rows2dict()
 			
 			
-			return self.identifications_dict
+			return self.collectors_dict
 
 
 	def rows2dict(self):
-		self.identifications_dict = {}
+		self.collectors_dict = {}
 		
+		collectors_order = 0
 		for row in self.rows:
-			if row[1] not in self.identifications_dict:
-				self.identifications_dict[row[1]] = []
+			if row[1] not in self.collectors_dict:
+				self.collectors_dict[row[1]] = []
+				collectors_order = 0
 			
-			identification = {
-				'IdentificationSequenceID': row[2],
-				'IdentificationDate': row[3],
-				'TaxonomicName': row[4],
-				'VernacularTerm': row[5],
-				'TaxonNameURI': row[6],
-				'TypeStatus': row[7],
-				'TypeNotes': row[8],
-				
+			collector = {
+				'CollectorsName': row[2],
+				'CollectorsAgentURI': row[3],
+				'CollectorsOrder': collectors_order,
+				'CollectorsSpecimenFieldNumber': row[5],
+				'CollectorsDataWithholding': row[6],
+				'CollectorsWithhold': row[7]
 			}
 			
-			self.identifications_dict[row[1]].append(identification)
+			collectors_order += 1
+			
+			self.collectors_dict[row[1]].append(collector)
 			
 		return
 
