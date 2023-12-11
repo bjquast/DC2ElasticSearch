@@ -24,12 +24,6 @@ class IdentificationUnitAnalyses():
 		# it is needed because the MethodIDs and ParameterIDs are not guarantied to be unique
 		# for different analyses and methods
 		
-		amp_lists = []
-		
-		for analysis_id in self.amp_ids:
-			for method_id in self.amp_ids[analysis_id]:
-				for parameter_id in self.amp_ids[analysis_id][method_id]:
-					amp_lists.append((analysis_id, method_id, parameter_id))
 		
 		query = """
 		DROP TABLE IF EXISTS [#temp_amp_filter]
@@ -40,8 +34,8 @@ class IdentificationUnitAnalyses():
 		query = """
 		CREATE TABLE [#temp_amp_filter] (
 			[AnalysisID] INT NOT NULL,
-			[MethodID] INT NOT NULL,
-			[ParameterID] INT NOT NULL,
+			[MethodID] INT,
+			[ParameterID] INT,
 			INDEX [idx_AnalysisID] ([AnalysisID]),
 			INDEX [idx_MethodID] ([MethodID]),
 			INDEX [idx_ParameterID] ([ParameterID])
@@ -50,9 +44,9 @@ class IdentificationUnitAnalyses():
 		self.cur.execute(query)
 		self.con.commit()
 		
-		placeholders = ['(?, ?, ?)' for _ in amp_lists]
+		placeholders = ['(?, ?, ?)' for _ in self.amp_lists]
 		values = []
-		for amp_list in amp_lists:
+		for amp_list in self.amp_lists:
 			values.extend(amp_list)
 		
 		query = """
@@ -431,6 +425,22 @@ class IdentificationUnitAnalyses():
 		return
 
 
+	def set_amp_filter_lists(self):
+		self.amp_lists = []
+		
+		for analysis_id in self.amp_ids:
+			if len(self.amp_ids[analysis_id]) <= 0:
+				self.amp_lists.append((analysis_id, None, None))
+			else:
+				for method_id in self.amp_ids[analysis_id]:
+					if len(self.amp_ids[analysis_id][method_id]) <= 0:
+						self.amp_lists.append((analysis_id, method_id, None))
+					else:
+						for parameter_id in self.amp_ids[analysis_id][method_id]:
+							self.amp_lists.append((analysis_id, method_id, parameter_id))
+		return
+
+
 
 	def get_data_page(self, page_num):
 		if page_num <= self.datagetter.max_page:
@@ -438,6 +448,7 @@ class IdentificationUnitAnalyses():
 			self.lastrow = page_num * self.datagetter.pagesize
 			
 			# about 40 parameters per method in barcoding is too much, so it must be filtered by amp_ids
+			self.set_amp_filter_lists()
 			self.create_amp_filter_temptable()
 			
 			self.create_analyses_temptable()

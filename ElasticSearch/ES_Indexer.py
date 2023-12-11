@@ -99,7 +99,10 @@ class ES_Indexer():
 			else:
 				self.successes += 1
 		
-		es_logger.info('>>> Updated {0} docs of {1} into {2}, {3} failed updates. iuparts page {4} <<<'.format(self.successes, doc_count, self.index, self.fails, page))
+		if self.fails > 0:
+			es_logger.info('>>> Update failed! Tried to update {0} docs of {1} into {2}, {3} failed updates. iuparts page {4} <<<'.format(self.successes, doc_count, self.index, self.fails, page))
+		else:
+			es_logger.info('>>> Updated {0} docs of {1} into {2}, {3} failed updates. iuparts page {4} <<<'.format(self.successes, doc_count, self.index, self.fails, page))
 		
 		self.client.indices.refresh(index=self.index)
 		return

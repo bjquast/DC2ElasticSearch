@@ -68,7 +68,42 @@ if __name__ == "__main__":
 			analyses = IdentificationUnitAnalyses(data_getter, barcode_amp_filter_ids)
 			analyses_dict = analyses.get_data_page(i)
 			
-			es_indexer.bulkUpdateFields(analyses_dict, 'Analyses', i)
+			es_indexer.bulkUpdateFields(analyses_dict, 'Barcodes', i)
+			
+			fogs_amp_filter_ids = {
+			'327': {
+					'23': ['140', '141', '150', '164', '165', '166', '167'],
+					'25': ['144', '145', '146', '148']
+				}
+			}
+			analyses = IdentificationUnitAnalyses(data_getter, fogs_amp_filter_ids)
+			analyses_dict = analyses.get_data_page(i)
+			
+			es_indexer.bulkUpdateFields(analyses_dict, 'FOGS', i)
+			
+			mam_measurements_amp_filter_ids = {
+			'210': {},
+			'220': {},
+			'230': {},
+			'240': {},
+			'250': {},
+			'260': {},
+			'270': {},
+			'280': {},
+			'290': {},
+			'293': {},
+			'294': {},
+			'295': {},
+			'296': {},
+			'299': {},
+			'301': {},
+			'302': {},
+			'303': {}
+			}
+			analyses = IdentificationUnitAnalyses(data_getter, mam_measurements_amp_filter_ids)
+			analyses_dict = analyses.get_data_page(i)
+			
+			es_indexer.bulkUpdateFields(analyses_dict, 'MAM_Measurements', i)
 			
 		
 		pudb.set_trace()
