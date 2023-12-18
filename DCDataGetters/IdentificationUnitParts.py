@@ -58,7 +58,8 @@ class IdentificationUnitParts():
 			ce.HabitatDescription,
 			ce.CollectingMethod,
 			ce.CountryCache,
-			ce.[DataWithholdingReason] AS EventWithholdingReason, 
+			ce.CollectionDate,
+			ce.[DataWithholdingReason] AS EventWithholdingReason,
 			CASE 
 				WHEN ce.[DataWithholdingReason] = '' THEN 'false'
 				WHEN ce.[DataWithholdingReason] IS NULL THEN 'false'

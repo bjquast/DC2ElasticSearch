@@ -63,7 +63,10 @@ class ES_Indexer():
 			else:
 				self.successes += 1
 		
-		es_logger.info('>>> Indexed {0} docs of {1} into {2}, {3} failed insertions. iuparts page {4} <<<'.format(self.successes, doc_count, self.index, self.fails, page))
+		if self.fails > 0:
+			es_logger.info('>>> Indexing failed! Tried to index {0} docs of {1} into {2}, {3} failed documents. {4} page {5} <<<'.format(self.successes, doc_count, self.index, self.fails, fieldname, page))
+		else:
+			es_logger.info('>>> Indexed {0} docs of {1} into {2}. {3} page {4} <<<'.format(self.successes, doc_count, self.index, fieldname, page))
 		
 		self.client.indices.refresh(index=self.index)
 		return
@@ -102,7 +105,7 @@ class ES_Indexer():
 		if self.fails > 0:
 			es_logger.info('>>> Update failed! Tried to update {0} docs of {1} into {2}, {3} failed updates. {4} page {5} <<<'.format(self.successes, doc_count, self.index, self.fails, fieldname, page))
 		else:
-			es_logger.info('>>> Updated {0} docs of {1} into {2}, {3} failed updates. {4} page {5} <<<'.format(self.successes, doc_count, self.index, self.fails, fieldname, page))
+			es_logger.info('>>> Updated {0} docs of {1} into {2}. {3} page {4} <<<'.format(self.successes, doc_count, self.index, fieldname, page))
 		
 		self.client.indices.refresh(index=self.index)
 		return

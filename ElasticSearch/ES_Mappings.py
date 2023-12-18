@@ -48,7 +48,7 @@ MappingsDict['iuparts'] = {
 		
 		# Storage
 		'PreparationMethod': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-		'PreparationDate':{
+		'PreparationDate': {
 			"type": "date",
 			"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||dd.MM.yyyy||dd.MM.yy||d.MM.yyyy||d.M.yyyy||dd.M.yyyy||d.MM.yy||d.M.yy||dd.M.yy||yyyy",
 			'ignore_malformed': True
@@ -78,12 +78,11 @@ MappingsDict['iuparts'] = {
 			{'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
 		'CountryCache':
 			{'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-		'EventWithholdingReason':
-			{'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-		'EventWithhold': {'type': 'boolean'},
-		'EventWithholdingReasonDate':
-			{'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-		'EventWithholdDate': {'type': 'boolean'},
+		'CollectionDate': {
+			"type": "date",
+			"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||dd.MM.yyyy||dd.MM.yy||d.MM.yyyy||d.M.yyyy||dd.M.yyyy||d.MM.yy||d.M.yy||dd.M.yy||yyyy",
+			'ignore_malformed': True
+		},
 		'WGS84_Coordinate':
 			{'type': 'geo_point',
 			"ignore_malformed": True},
@@ -102,10 +101,12 @@ MappingsDict['iuparts'] = {
 			{'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
 		'NamedAreaNotes':
 			{'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-		'Collectors':
+		'EventWithholdingReason':
 			{'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
-		'CollectorsWithholdingReason':
+		'EventWithhold': {'type': 'boolean'},
+		'EventWithholdingReasonDate':
 			{'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+		'EventWithholdDate': {'type': 'boolean'},
 		
 		# ExternalDatasource
 		'ExternalIdentifier':
@@ -158,6 +159,7 @@ MappingsDict['iuparts'] = {
 		
 		# Collectors
 		'CollectionAgents': {
+			'type': 'nested',
 			'properties': {
 				'CollectorsName': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
 				'CollectorsAgentURI': {'type': 'keyword'},
