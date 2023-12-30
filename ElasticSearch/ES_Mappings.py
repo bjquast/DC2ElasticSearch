@@ -140,9 +140,9 @@ MappingsDict['iuparts'] = {
 				'TypeNotes': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
 			}
 		},
-		'LastIdentificationCache': {'type': 'keyword'},
-		'FamilyCache': {'type': 'keyword'},
-		'OrderCache': {'type': 'keyword'},
+		'LastIdentificationCache': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+		'FamilyCache': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
+		'OrderCache': {'type': 'text', 'fields': {'keyword': {'type': 'keyword', 'ignore_above': 256}}},
 		'HierarchyCache': {'type': 'text'},
 		'OnlyObserved': {'type': 'boolean'},
 		'LifeStage': {'type': 'keyword'},

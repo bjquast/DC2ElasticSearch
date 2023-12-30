@@ -64,9 +64,9 @@ class ES_Indexer():
 				self.successes += 1
 		
 		if self.fails > 0:
-			es_logger.info('>>> Indexing failed! Tried to index {0} docs of {1} into {2}, {3} failed documents. {4} page {5} <<<'.format(self.successes, doc_count, self.index, self.fails, fieldname, page))
+			es_logger.info('>>> Indexing failed! Tried to index {0} docs of {1} into {2}, {3} failed documents. Page {4} <<<'.format(self.successes, doc_count, self.index, self.fails, page))
 		else:
-			es_logger.info('>>> Indexed {0} docs of {1} into {2}. {3} page {4} <<<'.format(self.successes, doc_count, self.index, fieldname, page))
+			es_logger.info('>>> Indexed {0} docs of {1} into {2}. Page {3} <<<'.format(self.successes, doc_count, self.index, page))
 		
 		self.client.indices.refresh(index=self.index)
 		return
