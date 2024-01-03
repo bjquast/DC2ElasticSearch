@@ -29,17 +29,18 @@ class ES_Indexer():
 	def createIndex(self):
 		#useMapping sets whether given, explicit mapping will be used or if ES should infer the mapping
 		self.mapping = MappingsDict[self.index]
+		self.settings = MappingsDict['settings']
 
 		try:
-			self.client.indices.create(index = self.index, mappings = self.mapping, timeout = "30s")
+			self.client.indices.create(index = self.index, mappings = self.mapping, settings = self.settings, timeout = "30s")
 		except elastic_transport.ConnectionError:
 			self.reconnectClient()
-			self.client.indices.create(index = self.index, mappings = self.mapping, timeout = "30s")
+			self.client.indices.create(index = self.index, mappings = self.mapping, settings = self.settings, timeout = "30s")
 		except elasticsearch.BadRequestError as error:
 			if self.client.indices.exists(index=self.index):
 				print('>>> Index `{0}` already exists, will be deleted to avoid duplicates <<<'.format(self.index))
 				self.client.indices.delete(index=self.index)
-				self.client.indices.create(index = self.index, mappings = self.mapping, timeout = "30s")
+				self.client.indices.create(index = self.index, mappings = self.mapping, settings = self.settings, timeout = "30s")
 			else:
 				es_logger.error(error)
 				raise
