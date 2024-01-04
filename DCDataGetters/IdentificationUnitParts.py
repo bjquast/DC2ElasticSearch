@@ -82,9 +82,9 @@ class IdentificationUnitParts():
 			cel_named_area.Location1 AS [NamedArea],
 			cel_named_area.Location2 AS [NamedAreaURL],
 			cel_named_area.LocationNotes AS [NamedAreaNotes],
-			iu.[LastIdentificationCache],
-			iu.[FamilyCache],
-			iu.[OrderCache],
+			TRIM(iu.[LastIdentificationCache]) AS [LastIdentificationCache],
+			TRIM(iu.[FamilyCache]) AS [FamilyCache],
+			TRIM(iu.[OrderCache]) AS [OrderCache],
 			iu.[HierarchyCache],
 			CASE 
 				WHEN iu.[OnlyObserved] = 0 THEN 'false'

@@ -86,6 +86,15 @@ class DataGetter():
 		self.cur.execute(query.format(self.server_url, self.database_name))
 		self.cur.commit()
 		
+		query = """
+		UPDATE [#temp_iu_part_ids]
+		SET PartAccessionNumber = SpecimenAccessionNumber
+		WHERE PartAccessionNumber = ''
+		;"""
+		
+		self.cur.execute(query)
+		self.cur.commit()
+		
 		self.set_max_page()
 		return
 
