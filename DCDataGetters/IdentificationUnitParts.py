@@ -100,8 +100,8 @@ class IdentificationUnitParts():
 			iu.[Circumstances] AS [IdentificationUnitCircumstances],
 			iu.[DataWithholdingReason] AS [IUWithholdingReason], 
 			CASE 
-				WHEN ce.[DataWithholdingReason] = '' THEN 'false'
-				WHEN ce.[DataWithholdingReason] IS NULL THEN 'false'
+				WHEN iu.[DataWithholdingReason] = '' THEN 'false'
+				WHEN iu.[DataWithholdingReason] IS NULL THEN 'false'
 				ELSE 'true'
 			END AS IUWithhold,
 			iu.[DisplayOrder] AS [IUDisplayOrder],
