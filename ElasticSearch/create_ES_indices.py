@@ -24,7 +24,7 @@ from DCDataGetters.IdentificationUnitAnalyses import IdentificationUnitAnalyses
 
 
 if __name__ == "__main__":
-	pudb.set_trace()
+	#pudb.set_trace()
 	
 	es_indexer = ES_Indexer()
 	es_indexer.deleteIndex()
@@ -112,6 +112,6 @@ if __name__ == "__main__":
 			es_indexer.bulkUpdateFields(analyses_dict, 'MAM_Measurements', i)
 			
 		
-		pudb.set_trace()
+		#pudb.set_trace()
 	
 
